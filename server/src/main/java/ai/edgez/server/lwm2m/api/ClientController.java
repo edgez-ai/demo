@@ -62,12 +62,12 @@ public class ClientController {
 
 	@GetMapping
 	public ResponseEntity<Collection<Registration>> getAllClients(HttpServletRequest httpRequest) {
-		String zone = resolveRequiredZone(httpRequest);
+		String zone = resolveZone(httpRequest);
 		Iterator<Registration> iterator = server.getRegistrationService().getAllRegistrations();
 		Collection<Registration> registrations = new java.util.ArrayList<>();
 		while (iterator.hasNext()) {
 			Registration registration = iterator.next();
-			if (registration != null && isEndpointAllowedForZone(registration.getEndpoint(), zone)) {
+			if (registration != null && isEndpointVisibleForZone(registration.getEndpoint(), zone)) {
 				registrations.add(registration);
 			}
 		}
@@ -207,25 +207,31 @@ public class ClientController {
 		}
 	}
 
-	private String resolveRequiredZone(HttpServletRequest request) {
-		String zone = ZoneResolver.resolveZone(request);
-		if (zone == null || zone.isBlank()) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "zone not resolved");
-		}
-		return zone;
+	private String resolveZone(HttpServletRequest request) {
+		return ZoneResolver.resolveZone(request);
 	}
 
 	private Registration getValidatedRegistration(String endpoint, HttpServletRequest request) {
-		String zone = resolveRequiredZone(request);
-		validateEndpointForZone(endpoint, zone);
+		String zone = resolveZone(request);
+		validateEndpointForZoneIfPresent(endpoint, zone);
 		return server.getRegistrationService().getByEndpoint(endpoint);
 	}
 
-	private void validateEndpointForZone(String endpoint, String zone) {
+	private void validateEndpointForZoneIfPresent(String endpoint, String zone) {
+		if (zone == null || zone.isBlank()) {
+			return;
+		}
 		if (!isEndpointAllowedForZone(endpoint, zone)) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
 					"Invalid endpoint. Expected format {zone}-{serial} with zone prefix matching resolved zone");
 		}
+	}
+
+	private boolean isEndpointVisibleForZone(String endpoint, String zone) {
+		if (zone == null || zone.isBlank()) {
+			return true;
+		}
+		return isEndpointAllowedForZone(endpoint, zone);
 	}
 
 	private boolean isEndpointAllowedForZone(String endpoint, String zone) {

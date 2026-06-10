@@ -19,12 +19,6 @@ logging:
   level:
     root: DEBUG
 
-redis:
-  host: localhost
-  port: 6379
-  # password: your_redis_password
-  ssl: false
-
 wasmer:
   module-path: classpath:wasm/hello.wasm
   entry-function: hello
