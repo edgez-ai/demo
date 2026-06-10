@@ -412,6 +412,22 @@ static bool lwm2m_is_valid_server_uri(const char *uri)
            (strncmp(uri, "coaps://", 8) == 0);
 }
 
+static bool lwm2m_get_sdkconfig_server_uri(char *server_uri, size_t uri_size)
+{
+    if (!server_uri || uri_size == 0) {
+        return false;
+    }
+
+#if defined(CONFIG_LWM2M_SERVER_URI)
+    if (lwm2m_is_valid_server_uri(CONFIG_LWM2M_SERVER_URI)) {
+        int written = snprintf(server_uri, uri_size, "%s", CONFIG_LWM2M_SERVER_URI);
+        return (written > 0 && (size_t)written < uri_size);
+    }
+#endif
+
+    return false;
+}
+
 esp_err_t lwm2m_client_set_server_uri_override(const char *server_uri)
 {
     if (!lwm2m_is_valid_server_uri(server_uri)) {
@@ -1406,19 +1422,26 @@ esp_err_t lwm2m_client_start(lwm2m_connection_type_t connection_type)
     } else {
         esp_err_t server_uri_err = lwm2m_load_server_uri_from_nvs(server, sizeof(server));
         if (server_uri_err != ESP_OK || !lwm2m_is_valid_server_uri(server)) {
+            if (lwm2m_get_sdkconfig_server_uri(server, sizeof(server))) {
+                ESP_LOGW(TAG,
+                         "LwM2M server URI unavailable/invalid in NVS (err=%s); using sdkconfig default URI: %s",
+                         esp_err_to_name(server_uri_err),
+                         server);
+            } else {
             esp_err_t gw_uri_err = lwm2m_build_uri_from_gateway_ip(server, sizeof(server));
             if (gw_uri_err != ESP_OK) {
                 ESP_LOGE(TAG,
-                         "LwM2M server URI unavailable from NVS and gateway IP is unavailable; cannot build server URI (nvs=%s, gateway=%s)",
+                         "LwM2M server URI unavailable from NVS, sdkconfig default invalid/missing, and gateway IP is unavailable; cannot build server URI (nvs=%s, gateway=%s)",
                          esp_err_to_name(server_uri_err),
                          esp_err_to_name(gw_uri_err));
                 return ESP_ERR_INVALID_STATE;
             }
 
             ESP_LOGW(TAG,
-                     "LwM2M server URI unavailable/invalid in NVS (err=%s); using gateway-derived server URI: %s",
+                     "LwM2M server URI unavailable/invalid in NVS (err=%s), sdkconfig default invalid/missing; using gateway-derived server URI: %s",
                      esp_err_to_name(server_uri_err),
                      server);
+            }
         } else {
             ESP_LOGI(TAG, "Loaded LwM2M server URI from NVS: %s", server);
         }
