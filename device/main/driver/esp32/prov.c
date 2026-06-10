@@ -4432,27 +4432,12 @@ static esp_err_t halow_init(void)
     uint16_t max_eirp_dbm = halow_max_eirp_dbm(channel_list);
     ESP_LOGI(TAG, "Regulatory max EIRP: %u dBm", max_eirp_dbm);
     
-    // MMIPAL must be initialized at least once per boot to create/register the MM lwIP netif.
+    // MMIPAL performs its own lwIP startup. If esp_netif already initialized lwIP,
+    // calling mmipal_init() can re-register the lwIP VFS sockets fd range and abort.
     if (!s_mmipal_initialized) {
-        struct mmipal_init_args mmipal_args = MMIPAL_INIT_ARGS_DEFAULT;
-        enum mmipal_status mmipal_status;
-
-        ESP_LOGI(TAG, "Initializing mmipal (lwIP network stack + WLAN boot)...");
-        mmipal_status = mmipal_init(&mmipal_args);
-
-        if (mmipal_status == MMIPAL_SUCCESS) {
-            s_mmipal_initialized = true;
-            ESP_LOGI(TAG, "mmipal initialized successfully - MM netif ready");
-        } else {
-            if (!g_lwip_initialized_by_esp_netif) {
-                ESP_LOGE(TAG, "Failed to initialize mmipal: %d", (int)mmipal_status);
-                return ESP_FAIL;
-            }
-
+        if (g_lwip_initialized_by_esp_netif) {
             ESP_LOGW(TAG,
-                     "mmipal_init failed with pre-initialized lwIP (status=%d), "
-                     "falling back to manual WLAN boot",
-                     (int)mmipal_status);
+                     "lwIP already initialized by esp_netif; skipping mmipal_init and booting WLAN manually");
 
             ESP_LOGI(TAG, "Booting WLAN (this may take 10-20 seconds)...");
             struct mmwlan_boot_args boot_args = MMWLAN_BOOT_ARGS_INIT;
@@ -4470,6 +4455,20 @@ static esp_err_t halow_init(void)
             if (link_cb_status != MMWLAN_SUCCESS) {
                 ESP_LOGW(TAG, "Failed to register mmwlan link-state callback after WLAN boot: %d",
                          (int)link_cb_status);
+            }
+        } else {
+            struct mmipal_init_args mmipal_args = MMIPAL_INIT_ARGS_DEFAULT;
+            enum mmipal_status mmipal_status;
+
+            ESP_LOGI(TAG, "Initializing mmipal (lwIP network stack + WLAN boot)...");
+            mmipal_status = mmipal_init(&mmipal_args);
+
+            if (mmipal_status == MMIPAL_SUCCESS) {
+                s_mmipal_initialized = true;
+                ESP_LOGI(TAG, "mmipal initialized successfully - MM netif ready");
+            } else {
+                ESP_LOGE(TAG, "Failed to initialize mmipal: %d", (int)mmipal_status);
+                return ESP_FAIL;
             }
         }
     }
