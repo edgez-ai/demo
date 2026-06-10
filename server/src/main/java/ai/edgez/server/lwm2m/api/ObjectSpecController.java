@@ -34,8 +34,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ai.edgez.server.lwm2m.config.LeshanServerComponent;
 import ai.edgez.server.lwm2m.model.ObjectModelSerDes;
 
-//@RestController
-//@RequestMapping("/api/objectspecs")
+@RestController
+@RequestMapping("/api/objectspecs")
 public class ObjectSpecController {
 
     private final ObjectModelSerDes serializer;

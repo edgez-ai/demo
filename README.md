@@ -2,6 +2,49 @@
 
 Code repository for the EdgeZ Wi-Fi HaLow PoC kit.
 
+## Getting started
+
+Use this order for local development.
+
+1. Start the server:
+
+	```bash
+	cd server
+	mvn spring-boot:run
+	```
+
+2. Find your local IP address (macOS example):
+
+	```bash
+	ipconfig getifaddr en0
+	```
+
+	If you are on Ethernet, use `en1` (or run `ifconfig` to confirm your active interface).
+
+3. Build the client with that server IP:
+
+	- Update `device/sdkconfig.defaults.esp32s3` and set:
+
+	  `CONFIG_LWM2M_SERVER_URI="coap://<YOUR_LOCAL_IP>:5683"`
+
+	  Example:
+
+	  `CONFIG_LWM2M_SERVER_URI="coap://192.168.1.100:5683"`
+
+	- Then build from the device folder:
+
+	  ```bash
+	  cd device
+	  idf.py build
+	  ```
+
+4. Optional no-build path (flash prebuilt firmware):
+
+	 - Open https://www.edgez.ai/flasher
+	 - In the Server dropdown, choose `custom`
+	 - Enter your local server IP in the server input field
+	 - Flash the firmware from the web flasher
+
 ## Repository summary
 
 This repository is organized into two main parts:
