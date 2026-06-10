@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LwM2M 1.2 vendor object for BLE interface control.
+  Object ID matches firmware constant LWM2M_OBJ_BLE_INTERFACE (10254).
+-->
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+  <Object ObjectType="MODefinition">
+    <Name>BLE Interface</Name>
+    <Description1><![CDATA[LwM2M-managed BLE interface with enable/disable control, scan execution, and parameterized add-device execution.]]></Description1>
+    <ObjectID>10254</ObjectID>
+    <ObjectURN>urn:oma:lwm2m:x:10254</ObjectURN>
+    <LWM2MVersion>1.2</LWM2MVersion>
+    <ObjectVersion>1.0</ObjectVersion>
+    <MultipleInstances>Single</MultipleInstances>
+    <Mandatory>Optional</Mandatory>
+    <Resources>
+      <Item ID="0">
+        <Name>Enabled</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Boolean</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Enable or disable BLE interface functionality.]]></Description>
+      </Item>
+      <Item ID="1">
+        <Name>Scan Results</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Latest scan results JSON array. Each element contains uuid, name, and rssi fields.]]></Description>
+      </Item>
+      <Item ID="2">
+        <Name>Last Error</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Last BLE interface error string; empty when no active error.]]></Description>
+      </Item>
+      <Item ID="3">
+        <Name>Add Device</Name>
+        <Operations>E</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type></Type>
+        <RangeEnumeration>Execute argument JSON: {"uuid":"...","pair_key":"...","name":"...","display_name":"..."}</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Execute to add a BLE device instance. JSON fields: uuid (required), pair_key (optional), name (optional), display_name (optional).]]></Description>
+      </Item>
+      <Item ID="4">
+        <Name>Scan</Name>
+        <Operations>E</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type></Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Execute to perform BLE device scan and refresh scan result resources.]]></Description>
+      </Item>
+      <Item ID="5">
+        <Name>Scanned Count</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration>0..</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Count of devices from last scan operation.]]></Description>
+      </Item>
+      <Item ID="6">
+        <Name>Scan Timeout</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration>1..</RangeEnumeration>
+        <Units>ms</Units>
+        <Description><![CDATA[BLE scan timeout in milliseconds used by the Scan execute operation.]]></Description>
+      </Item>
+    </Resources>
+    <Description2><![CDATA[]]></Description2>
+  </Object>
+</LWM2M>

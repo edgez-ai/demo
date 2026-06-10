@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LwM2M 1.2 vendor object for I2C interfaces.
+  Object ID matches firmware constant LWM2M_OBJ_I2C (10251).
+-->
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+  <Object ObjectType="MODefinition">
+    <Name>I2C Interface</Name>
+    <Description1><![CDATA[LwM2M-managed I2C bus interface including configuration, runtime stats, and buffered read/write access.]]></Description1>
+    <ObjectID>10251</ObjectID>
+    <ObjectURN>urn:oma:lwm2m:x:10251</ObjectURN>
+    <LWM2MVersion>1.2</LWM2MVersion>
+    <ObjectVersion>1.0</ObjectVersion>
+    <MultipleInstances>Multiple</MultipleInstances>
+    <Mandatory>Optional</Mandatory>
+    <Resources>
+      <Item ID="0">
+        <Name>Interface Type</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration>1</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Fixed interface type identifier (1 = I2C).]]></Description>
+      </Item>
+      <Item ID="1">
+        <Name>Enabled</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Boolean</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Enable or disable this I2C interface instance.]]></Description>
+      </Item>
+      <Item ID="2">
+        <Name>Open State</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Boolean</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Set or report whether the bus is opened (true) or closed (false). Write triggers bus open/close.]]></Description>
+      </Item>
+      <Item ID="3">
+        <Name>TX Bytes</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Total bytes transmitted since last reset.]]></Description>
+      </Item>
+      <Item ID="4">
+        <Name>RX Bytes</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Total bytes received since last reset.]]></Description>
+      </Item>
+      <Item ID="5">
+        <Name>Error Count</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Total error events since last reset.]]></Description>
+      </Item>
+      <Item ID="6">
+        <Name>Last Error</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Last reported error string; absent if no errors occurred.]]></Description>
+      </Item>
+      <Item ID="7">
+        <Name>I2C Address</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration>0..127</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Target 7-bit I2C address for this interface instance.]]></Description>
+      </Item>
+      <Item ID="8">
+        <Name>Mode</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Implementation-defined mode or flags for this I2C interface.]]></Description>
+      </Item>
+      <Item ID="9">
+        <Name>Reset Counters</Name>
+        <Operations>E</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type></Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Execute to clear TX/RX/error counters and last error.]]></Description>
+      </Item>
+      <Item ID="10">
+        <Name>Stats Window</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>ms</Units>
+        <Description><![CDATA[Moving window size used to compute TX/RX rate.]]></Description>
+      </Item>
+      <Item ID="11">
+        <Name>TX Rate</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte/s</Units>
+        <Description><![CDATA[Estimated transmit throughput over the stats window.]]></Description>
+      </Item>
+      <Item ID="12">
+        <Name>RX Rate</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte/s</Units>
+        <Description><![CDATA[Estimated receive throughput over the stats window.]]></Description>
+      </Item>
+      <Item ID="13">
+        <Name>TX Payload</Name>
+        <Operations>W</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Opaque</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Payload to transmit on the I2C bus.]]></Description>
+      </Item>
+      <Item ID="14">
+        <Name>RX Buffer Position</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration>0..</RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Cursor into the receive buffer for streaming reads.]]></Description>
+      </Item>
+      <Item ID="15">
+        <Name>RX Chunk</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Opaque</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Chunked read from the receive buffer starting at the current cursor; cursor auto-advances.]]></Description>
+      </Item>
+      <Item ID="16">
+        <Name>RX Buffer Size</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration>0..</RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Total readable size of the receive buffer.]]></Description>
+      </Item>
+      <Item ID="17">
+        <Name>SDA Pin</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[GPIO number used for SDA (TX).]]></Description>
+      </Item>
+      <Item ID="18">
+        <Name>SCL Pin</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[GPIO number used for SCL (RX/clock).]]></Description>
+      </Item>
+      <Item ID="19">
+        <Name>Driver Script</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Lua driver script content persisted in NVS for this interface instance.]]></Description>
+      </Item>
+      <Item ID="20">
+        <Name>LwM2M Object IDs</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration>Comma-separated uint16 object IDs (e.g. 3303,10254)</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Comma-separated list of LwM2M object IDs associated with this interface instance.]]></Description>
+      </Item>
+    </Resources>
+    <Description2><![CDATA[]]></Description2>
+  </Object>
+</LWM2M>

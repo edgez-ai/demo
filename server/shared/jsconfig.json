@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "*": ["../../leshan-demo-bsserver/webapp/node_modules/*"]
+    }
+  }
+}

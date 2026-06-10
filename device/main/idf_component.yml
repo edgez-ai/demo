@@ -1,0 +1,19 @@
+## IDF Component Manager Manifest File
+dependencies:
+  ## Required IDF version
+  idf:
+    version: '>=4.1.0'
+  nikas-belogolov/nanopb: "^1.0.0"
+  georgik/lua: "5.5.0~7"
+  qrcode: "^0.1.0"
+  espressif/esp32-camera: "*"
+  morselib:
+    path: ../third_party/mm-iot-esp32/framework/morselib
+  mm_shims:
+    path: ../third_party/mm-iot-esp32/framework/mm_shims
+  mmipal:
+    path: ../third_party/mm-iot-esp32/framework/src/mmipal
+  mmutils:
+    path: ../third_party/mm-iot-esp32/framework/src/mmutils
+  mmregdb:
+    path: ../third_party/mm-iot-esp32/framework/src/mmregdb

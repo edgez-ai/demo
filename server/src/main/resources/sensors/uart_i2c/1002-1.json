@@ -1,0 +1,32 @@
+{
+  "id": 1002,
+  "version" : 1,
+  "name": "SHT3x Temperature/Humidity",
+  "lwm2m_objects": [
+    {
+      "object": 3303,
+      "instance": 0,
+      "resource": 5700,
+      "type": "sensor",
+      "name": "Temperature",
+      "device_class": "temperature",
+      "state_class": "measurement",
+      "unit_of_measurement": "°C",
+      "icon": "mdi:thermometer",
+      "suggested_display_precision": 1
+    },
+    {
+      "object": 3304,
+      "instance": 0,
+      "resource": 5700,
+      "type": "sensor",
+      "name": "Humidity",
+      "device_class": "humidity",
+      "state_class": "measurement",
+      "unit_of_measurement": "%",
+      "icon": "mdi:water-percent",
+      "suggested_display_precision": 1
+    }
+  ],
+  "script": "local result = {}\n\nlocal i2c_address = 0x44\nlocal i2c_rx_size = 6\nlocal i2c_read_delay = 0.5\nlocal i2c_repeatability = \"high\"\n\nlocal i2c_temp_object = 3303\nlocal i2c_temp_resource = 5700\nlocal i2c_humidity_object = 3304\nlocal i2c_humidity_resource = 5700\n\nlocal i2c_log_cfg = { quiet = false }\n\n-- SHT3x commands\nlocal SHT3X_CMD_RESET = string.char(0x30, 0xA2)\nlocal SHT3X_CMD_SINGLE_SHOT_HIGH = string.char(0x2C, 0x06)\nlocal SHT3X_CMD_SINGLE_SHOT_MED  = string.char(0x2C, 0x0D)\nlocal SHT3X_CMD_SINGLE_SHOT_LOW  = string.char(0x2C, 0x10)\n\nlocal function sht3x_read_values()\n  local ok, err = i2c_reset_rx_cursor()\n  if not ok then return nil, \"failed to reset rx cursor: \" .. tostring(err) end\n\n  ok, err = i2c_write(SHT3X_CMD_RESET)\n  if not ok then return nil, \"failed to write reset command: \" .. tostring(err) end\n\n  i2c_sleep(0.002)\n\n  local cmd\n  if i2c_repeatability == \"high\" then\n    cmd = SHT3X_CMD_SINGLE_SHOT_HIGH\n  elseif i2c_repeatability == \"med\" then\n    cmd = SHT3X_CMD_SINGLE_SHOT_MED\n  else\n    cmd = SHT3X_CMD_SINGLE_SHOT_LOW\n  end\n\n  ok, err = i2c_set_rx_size(i2c_rx_size)\n  if not ok then return nil, \"failed to set rx size: \" .. tostring(err) end\n\n  ok, err = i2c_reset_rx_cursor()\n  if not ok then return nil, \"failed to reset rx cursor: \" .. tostring(err) end\n\n  ok, err = i2c_write(cmd)\n  if not ok then return nil, \"failed to write measurement command: \" .. tostring(err) end\n\n  i2c_sleep(i2c_read_delay)\n\n  ok, err = i2c_reset_rx_cursor()\n  if not ok then return nil, \"failed to reset rx cursor before read: \" .. tostring(err) end\n\n  ok, err = i2c_set_rx_size(i2c_rx_size)\n  if not ok then return nil, \"failed to set rx size before read: \" .. tostring(err) end\n\n  local data = i2c_read_chunk()\n  if not data or #data < 6 then\n    return nil, \"incomplete data received (got \" .. tostring(data and #data or 0) .. \" bytes)\"\n  end\n\n  util_log(i2c_log_cfg, \"SHT3x\", \"RX: \" .. util_bytes_to_hex(data))\n\n  local temp_hi = string.byte(data, 1)\n  local temp_lo = string.byte(data, 2)\n  local temp_crc = string.byte(data, 3)\n  local hum_hi = string.byte(data, 4)\n  local hum_lo = string.byte(data, 5)\n  local hum_crc = string.byte(data, 6)\n\n  local temp_raw = (temp_hi << 8) | temp_lo\n  local hum_raw = (hum_hi << 8) | hum_lo\n\n  local temp_crc_valid = util_crc8(data:sub(1, 2)) == temp_crc\n  local hum_crc_valid = util_crc8(data:sub(4, 5)) == hum_crc\n\n  local temperature = nil\n  local humidity = nil\n\n  if temp_crc_valid then\n    temperature = -45 + (175 * temp_raw / 65535.0)\n  else\n    util_log(i2c_log_cfg, \"SHT3x\", \"Temperature CRC check failed\")\n  end\n\n  if hum_crc_valid then\n    humidity = 100 * hum_raw / 65535.0\n  else\n    util_log(i2c_log_cfg, \"SHT3x\", \"Humidity CRC check failed\")\n  end\n\n  return {\n    temperature = temperature,\n    humidity = humidity,\n    temp_raw = temp_raw,\n    hum_raw = hum_raw,\n    temp_crc_valid = temp_crc_valid,\n    hum_crc_valid = hum_crc_valid,\n  }\nend\n\nlocal i2c_ok, i2c_err = i2c_connect(i2c_address)\nif not i2c_ok then\n  i2c_safe_close()\n  error(\"failed to open i2c: \" .. tostring(i2c_err))\nend\n\nlocal i2c_result, i2c_read_err = sht3x_read_values()\ni2c_safe_close()\nif not i2c_result then\n  error(i2c_read_err)\nend\n\nif i2c_result.temperature ~= nil then\n  table.insert(result, {\n    object = i2c_temp_object,\n    instance = 0,\n    resource = i2c_temp_resource,\n    value = i2c_result.temperature,\n  })\nend\n\nif i2c_result.humidity ~= nil then\n  table.insert(result, {\n    object = i2c_humidity_object,\n    instance = 0,\n    resource = i2c_humidity_resource,\n    value = i2c_result.humidity,\n  })\nend\n\nreturn result\n"
+}

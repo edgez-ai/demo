@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LwM2M 1.2 vendor object for BLE device instances.
+  Object ID matches firmware constant LWM2M_OBJ_BLE_DEVICE (10255).
+-->
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+  <Object ObjectType="MODefinition">
+    <Name>BLE Device</Name>
+    <Description1><![CDATA[Per-device BLE mapping object with UUID, optional pair key/script name, and read/write BLE resource paths. Multiple instances represent added devices and are persisted on device.]]></Description1>
+    <ObjectID>10255</ObjectID>
+    <ObjectURN>urn:oma:lwm2m:x:10255</ObjectURN>
+    <LWM2MVersion>1.2</LWM2MVersion>
+    <ObjectVersion>1.0</ObjectVersion>
+    <MultipleInstances>Multiple</MultipleInstances>
+    <Mandatory>Optional</Mandatory>
+    <Resources>
+      <Item ID="0">
+        <Name>BLE UUID</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Unique BLE device identifier (address or UUID string).]]></Description>
+      </Item>
+      <Item ID="1">
+        <Name>Script Object Name</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Optional script object selector/name associated with this BLE device.]]></Description>
+      </Item>
+      <Item ID="2">
+        <Name>Read BLE Resource</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Implementation-defined BLE read resource path/characteristic identifier.]]></Description>
+      </Item>
+      <Item ID="3">
+        <Name>Write BLE Resource</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Implementation-defined BLE write resource path/characteristic identifier.]]></Description>
+      </Item>
+      <Item ID="4">
+        <Name>Last Read Value</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>Opaque</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Last payload read from the configured BLE read resource.]]></Description>
+      </Item>
+      <Item ID="5">
+        <Name>Write Value</Name>
+        <Operations>W</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>Opaque</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Payload written to configured BLE write resource.]]></Description>
+      </Item>
+      <Item ID="6">
+        <Name>Read Trigger</Name>
+        <Operations>E</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type></Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Execute to trigger BLE read operation and refresh Last Read Value.]]></Description>
+      </Item>
+      <Item ID="7">
+        <Name>Last Write Value</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>Opaque</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Last payload accepted on Write Value resource.]]></Description>
+      </Item>
+      <Item ID="8">
+        <Name>Pair Key</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Optional BLE pairing key associated with this device instance.]]></Description>
+      </Item>
+      <Item ID="9">
+        <Name>Name</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Optional BLE device name.]]></Description>
+      </Item>
+      <Item ID="10">
+        <Name>Display Name</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Optional UI-friendly display name for this BLE device.]]></Description>
+      </Item>
+    </Resources>
+    <Description2><![CDATA[]]></Description2>
+  </Object>
+</LWM2M>

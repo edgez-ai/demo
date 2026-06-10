@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LwM2M 1.2 vendor object for RS485 / Modbus UART interfaces.
+  Object ID matches firmware constant LWM2M_OBJ_RS485 (10252).
+-->
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+  <Object ObjectType="MODefinition">
+    <Name>RS485 Interface</Name>
+    <Description1><![CDATA[LwM2M-managed RS485 (Modbus/UART) interface including port setup, statistics, and buffered read/write access.]]></Description1>
+    <ObjectID>10252</ObjectID>
+    <ObjectURN>urn:oma:lwm2m:x:10252</ObjectURN>
+    <LWM2MVersion>1.2</LWM2MVersion>
+    <ObjectVersion>1.0</ObjectVersion>
+    <MultipleInstances>Multiple</MultipleInstances>
+    <Mandatory>Optional</Mandatory>
+    <Resources>
+      <Item ID="0">
+        <Name>Interface Type</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration>3</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Fixed interface type identifier (3 = Modbus/RS485 UART).]]></Description>
+      </Item>
+      <Item ID="1">
+        <Name>Enabled</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Boolean</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Enable or disable this RS485 interface instance.]]></Description>
+      </Item>
+      <Item ID="2">
+        <Name>Open State</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Boolean</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Set or report whether the port is opened (true) or closed (false). Write triggers port open/close.]]></Description>
+      </Item>
+      <Item ID="3">
+        <Name>TX Bytes</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Total bytes transmitted since last reset.]]></Description>
+      </Item>
+      <Item ID="4">
+        <Name>RX Bytes</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Total bytes received since last reset.]]></Description>
+      </Item>
+      <Item ID="5">
+        <Name>Error Count</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Total error events since last reset.]]></Description>
+      </Item>
+      <Item ID="6">
+        <Name>Last Error</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Last reported error string; absent if no errors occurred.]]></Description>
+      </Item>
+      <Item ID="7">
+        <Name>Baudrate</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration>300..1000000</RangeEnumeration>
+        <Units>bit/s</Units>
+        <Description><![CDATA[UART baudrate for the RS485 port.]]></Description>
+      </Item>
+      <Item ID="8">
+        <Name>Modbus Unit ID</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration>0..247</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Unit identifier used for Modbus addressing.]]></Description>
+      </Item>
+      <Item ID="9">
+        <Name>Mode</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Implementation-defined mode or flags for this RS485 interface (e.g., parity/stop bits).]]></Description>
+      </Item>
+      <Item ID="10">
+        <Name>Reset Counters</Name>
+        <Operations>E</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type></Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Execute to clear TX/RX/error counters and last error.]]></Description>
+      </Item>
+      <Item ID="11">
+        <Name>Stats Window</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>ms</Units>
+        <Description><![CDATA[Moving window size used to compute TX/RX rate.]]></Description>
+      </Item>
+      <Item ID="12">
+        <Name>TX Rate</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte/s</Units>
+        <Description><![CDATA[Estimated transmit throughput over the stats window.]]></Description>
+      </Item>
+      <Item ID="13">
+        <Name>RX Rate</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte/s</Units>
+        <Description><![CDATA[Estimated receive throughput over the stats window.]]></Description>
+      </Item>
+      <Item ID="14">
+        <Name>TX Payload</Name>
+        <Operations>W</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Opaque</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Payload to transmit on the RS485 bus.]]></Description>
+      </Item>
+      <Item ID="15">
+        <Name>RX Buffer Position</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration>0..</RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Cursor into the receive buffer for streaming reads.]]></Description>
+      </Item>
+      <Item ID="16">
+        <Name>RX Chunk</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Opaque</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Chunked read from the receive buffer starting at the current cursor; cursor auto-advances.]]></Description>
+      </Item>
+      <Item ID="17">
+        <Name>RX Buffer Size</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration>0..</RangeEnumeration>
+        <Units>byte</Units>
+        <Description><![CDATA[Total readable size of the receive buffer.]]></Description>
+      </Item>
+      <Item ID="18">
+        <Name>TX Pin</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[GPIO number used for UART TX/driver enable.]]></Description>
+      </Item>
+      <Item ID="19">
+        <Name>RX Pin</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[GPIO number used for UART RX.]]></Description>
+      </Item>
+      <Item ID="20">
+        <Name>Driver Script</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Lua driver script content persisted in NVS for this interface instance.]]></Description>
+      </Item>
+      <Item ID="21">
+        <Name>LwM2M Object IDs</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration>Comma-separated uint16 object IDs (e.g. 3303,10254)</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Comma-separated list of LwM2M object IDs associated with this interface instance.]]></Description>
+      </Item>
+    </Resources>
+    <Description2><![CDATA[]]></Description2>
+  </Object>
+</LWM2M>

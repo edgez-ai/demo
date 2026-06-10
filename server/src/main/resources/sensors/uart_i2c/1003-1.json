@@ -1,0 +1,20 @@
+{
+  "id": 1003,
+  "version" : 1,
+  "name": "Random Temperature (Sample)",
+  "lwm2m_objects": [
+    {
+      "object": 3303,
+      "instance": 0,
+      "resource": 5700,
+      "type": "sensor",
+      "name": "Temperature",
+      "device_class": "temperature",
+      "state_class": "measurement",
+      "unit_of_measurement": "°C",
+      "icon": "mdi:thermometer",
+      "suggested_display_precision": 1
+    }
+  ],
+  "script": "local result = {}\n\nmath.randomseed((os.time() % 100000) + math.floor((os.clock() or 0) * 1000))\n\nlocal value = math.random(180, 320) / 10\n\ntable.insert(result, {\n  object = 3303,\n  instance = 0,\n  resource = 5700,\n  value = value,\n})\n\nreturn result\n"
+}

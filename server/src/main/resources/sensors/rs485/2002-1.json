@@ -1,0 +1,32 @@
+{
+  "id": 2002,
+  "version" : 1,
+  "name": "Flow Meter RS485",
+  "lwm2m_objects": [
+    {
+      "object": 3346,
+      "instance": 0,
+      "resource": 5700,
+      "type": "sensor",
+      "name": "Flow Rate",
+      "device_class": "volume_flow_rate",
+      "state_class": "measurement",
+      "unit_of_measurement": "m³/h",
+      "icon": "mdi:water",
+      "suggested_display_precision": 2
+    },
+    {
+      "object": 3424,
+      "instance": 0,
+      "resource": 1,
+      "type": "sensor",
+      "name": "Total Volume",
+      "device_class": "water",
+      "state_class": "total_increasing",
+      "unit_of_measurement": "m³",
+      "icon": "mdi:counter",
+      "suggested_display_precision": 3
+    }
+  ], 
+  "script": "local result = {}\n\nlocal rs485_baud = 9600\nlocal rs485_unit_id = 1\nlocal rs485_address = 0\nlocal rs485_count = 4\nlocal rs485_modbus_timeout = 1.0\nlocal rs485_flow_scale = 100000.0\nlocal rs485_volume_scale = 10000.0\nlocal rs485_flow_rate_object = 3346\nlocal rs485_flow_rate_resource = 5700\nlocal rs485_total_volume_object = 3424\nlocal rs485_total_volume_resource = 1\n\nlocal rs485_log_cfg = { quiet = false }\n\nlocal function rs485_read_holding_registers(rs485_read_address, rs485_read_count)\n  local rs485_request = util_build_read_holding_request(rs485_unit_id, rs485_read_address, rs485_read_count)\n  util_log(rs485_log_cfg, \"Flow\", \"TX Read Holding Registers: \" .. util_bytes_to_hex(rs485_request))\n\n  local rs485_ok, rs485_err = rs485_reset_rx_cursor()\n  if not rs485_ok then\n    return nil, \"failed to reset rx cursor: \" .. tostring(rs485_err)\n  end\n\n  rs485_ok, rs485_err = rs485_write(rs485_request)\n  if not rs485_ok then\n    return nil, \"failed to write tx payload: \" .. tostring(rs485_err)\n  end\n\n  local rs485_byte_count = rs485_read_count * 2\n  local rs485_deadline = os.clock() + rs485_modbus_timeout\n  local rs485_buffer = \"\"\n\n  while os.clock() < rs485_deadline do\n    local rs485_chunk = rs485_read_chunk()\n    if rs485_chunk and #rs485_chunk > 0 then\n      rs485_buffer = rs485_buffer .. rs485_chunk\n      local rs485_frame = util_extract_modbus_frame(rs485_buffer, rs485_unit_id, 0x03, rs485_byte_count)\n      if rs485_frame then\n        local rs485_payload = rs485_frame:sub(4, -3)\n        local rs485_regs = {}\n        for rs485_i = 1, #rs485_payload, 2 do\n          local rs485_hi = string.byte(rs485_payload, rs485_i)\n          local rs485_lo = string.byte(rs485_payload, rs485_i + 1)\n          rs485_regs[#rs485_regs + 1] = (rs485_hi << 8) | rs485_lo\n        end\n        return rs485_regs\n      end\n    end\n    if type(rs485_sleep) == \"function\" then\n      rs485_sleep(0.02)\n    end\n  end\n\n  return nil, \"No valid Modbus response frame received\"\nend\n\nlocal function rs485_read_values()\n  local rs485_effective_count = rs485_count == 5 and 4 or rs485_count\n  local rs485_regs, rs485_err = rs485_read_holding_registers(rs485_address, rs485_effective_count)\n  if not rs485_regs then\n    return nil, rs485_err\n  end\n  if #rs485_regs < 4 then\n    return nil, \"insufficient register count\"\n  end\n\n  local rs485_flow_rate_raw = (rs485_regs[3] << 16) | rs485_regs[4]\n  local rs485_total_volume_raw = (rs485_regs[1] << 16) | rs485_regs[2]\n\n  local rs485_flow_rate = util_decode_bcd_32(rs485_flow_rate_raw) / rs485_flow_scale\n  local rs485_total_volume = util_decode_bcd_32(rs485_total_volume_raw) / rs485_volume_scale\n  return {\n    flow_rate = rs485_flow_rate,\n    total_volume = rs485_total_volume,\n    regs = rs485_regs,\n  }\nend\n\nlocal rs485_ok, rs485_err = rs485_connect(rs485_baud)\nif not rs485_ok then\n  rs485_safe_close()\n  error(\"failed to open rs485: \" .. tostring(rs485_err))\nend\n\nlocal rs485_result, rs485_read_err = rs485_read_values()\nrs485_safe_close()\nif not rs485_result then\n  error(rs485_read_err)\nend\n\n\ntable.insert(result, {\n  object = rs485_flow_rate_object,\n  instance = 0,\n  resource = rs485_flow_rate_resource,\n  value = rs485_result.flow_rate,\n})\n\ntable.insert(result, {\n  object = rs485_total_volume_object,\n  instance = 0,\n  resource = rs485_total_volume_resource,\n  value = rs485_result.total_volume,\n})\n\nreturn result\n"
+}

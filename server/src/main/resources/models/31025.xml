@@ -1,0 +1,135 @@
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.openmobilealliance.org/tech/profiles/LWM2M-v1_1.xsd">
+    <Object ObjectType="MODefinition">
+        <Name>Edge Script</Name>
+        <Description1><![CDATA[Custom object used to manage edge Lua scripts as separate script instances identified by numeric script ID.]]></Description1>
+        <ObjectID>31025</ObjectID>
+        <ObjectURN>urn:oma:lwm2m:x:31025</ObjectURN>
+        <LWM2MVersion>1.1</LWM2MVersion>
+        <ObjectVersion>1.1</ObjectVersion>
+        <MultipleInstances>Multiple</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Resources>
+            <Item ID="0">
+                <Name>Script ID</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Mandatory</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration>1..65535</RangeEnumeration>
+                <Units></Units>
+                <Description><![CDATA[Numeric identifier of this script instance.]]></Description>
+            </Item>
+            <Item ID="1">
+                <Name>Script Size</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Mandatory</Mandatory>
+                <Type>Unsigned Integer</Type>
+                <RangeEnumeration>0..16777216</RangeEnumeration>
+                <Units>bytes</Units>
+                <Description><![CDATA[Stored script size in bytes.]]></Description>
+            </Item>
+            <Item ID="2">
+                <Name>Script Control</Name>
+                <Operations>RW</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Mandatory</Mandatory>
+                <Type>String</Type>
+                <RangeEnumeration></RangeEnumeration>
+                <Units></Units>
+                <Description><![CDATA[Control command channel. Supported values include START <size>, FINISH, ABORT, and DELETE.]]></Description>
+            </Item>
+            <Item ID="3">
+                <Name>Script Chunk</Name>
+                <Operations>W</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>Opaque</Type>
+                <RangeEnumeration></RangeEnumeration>
+                <Units></Units>
+                <Description><![CDATA[Opaque script upload chunk content written after START command and before FINISH.]]></Description>
+            </Item>
+            <Item ID="4">
+                <Name>Script Name</Name>
+                <Operations>RW</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>String</Type>
+                <RangeEnumeration></RangeEnumeration>
+                <Units></Units>
+                <Description><![CDATA[Human-readable script name for this script instance.]]></Description>
+            </Item>
+            <Item ID="5">
+                <Name>Execute</Name>
+                <Operations>E</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type></Type>
+                <RangeEnumeration></RangeEnumeration>
+                <Units></Units>
+                <Description><![CDATA[Executes the stored Lua script for this script instance and logs each result table entry on the device.]]></Description>
+            </Item>
+            <Item ID="6">
+                <Name>Global Buffer Size</Name>
+                <Operations>RW</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>Unsigned Integer</Type>
+                <RangeEnumeration>1..1048576</RangeEnumeration>
+                <Units>bytes</Units>
+                <Description><![CDATA[Configured capacity of the script global result buffer for this script instance.]]></Description>
+            </Item>
+            <Item ID="7">
+                <Name>Buffer MIME Type</Name>
+                <Operations>RW</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>String</Type>
+                <RangeEnumeration></RangeEnumeration>
+                <Units></Units>
+                <Description><![CDATA[MIME type associated with the global buffer payload produced by script execution.]]></Description>
+            </Item>
+            <Item ID="8">
+                <Name>Global Buffer Length</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>Unsigned Integer</Type>
+                <RangeEnumeration>0..1048576</RangeEnumeration>
+                <Units>bytes</Units>
+                <Description><![CDATA[Current byte length of data in the global buffer after script execution.]]></Description>
+            </Item>
+            <Item ID="9">
+                <Name>Global Buffer Data</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>Opaque</Type>
+                <RangeEnumeration></RangeEnumeration>
+                <Units></Units>
+                <Description><![CDATA[Opaque bytes currently stored in the script global buffer.]]></Description>
+            </Item>
+            <Item ID="10">
+                <Name>Execution Result JSON</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>String</Type>
+                <RangeEnumeration></RangeEnumeration>
+                <Units></Units>
+                <Description><![CDATA[JSON string containing the latest script execution result records for this script instance.]]></Description>
+            </Item>
+            <Item ID="11">
+                <Name>Script Version</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration>1..65535</RangeEnumeration>
+                <Units></Units>
+                <Description><![CDATA[Version number used by server/device config sync for this script instance.]]></Description>
+            </Item>
+        </Resources>
+        <Description2 />
+    </Object>
+</LWM2M>

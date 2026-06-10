@@ -1,0 +1,8 @@
+[submodule "device/components/wakaama"]
+	path = device/components/wakaama
+	url = https://github.com/edgez-ai/wakaama.git
+	branch = esp32
+[submodule "device/third_party/mm-iot-esp32"]
+	path = device/third_party/mm-iot-esp32
+	url = https://github.com/MorseMicro/mm-iot-esp32.git
+	branch = main

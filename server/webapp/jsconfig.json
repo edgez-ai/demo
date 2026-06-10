@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "@leshan-demo-servers-shared/*": [
+        "../../leshan-demo-servers-shared/webapp/src/*"
+      ]
+    }
+  }
+}

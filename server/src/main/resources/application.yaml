@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:./data/edge-server-db;AUTO_SERVER=TRUE
+    username: sa
+    password:
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+logging:
+  level:
+    root: DEBUG
+
+redis:
+  host: localhost
+  port: 6379
+  # password: your_redis_password
+  ssl: false
+
+wasmer:
+  module-path: classpath:wasm/hello.wasm
+  entry-function: hello
+  auto-start:
+    enabled: true
+
+lwm2m:
+  coap-port: 5683
+  coaps-port: 5684
+  report:
+    mongodb:
+      enabled: false
+      collection: mqtt_like_data
+  registration:
+    ack:
+      enabled: true
+      include-query-params: true
+      time-sync-interval-sec: 300

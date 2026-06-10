@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LwM2M vendor object for sampling configuration.
+  Object ID matches firmware constant LWM2M_OBJ_SAMPLE (31024).
+-->
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+  <Object ObjectType="MODefinition">
+    <Name>Sample Configuration</Name>
+    <Description1><![CDATA[LwM2M-managed sampling configuration object controlling sampling/report cadence, transport retry settings, selected sensor script IDs, and latest sampled data lines.]]></Description1>
+    <ObjectID>31024</ObjectID>
+    <ObjectURN>urn:oma:lwm2m:x:31024</ObjectURN>
+    <LWM2MVersion>1.2</LWM2MVersion>
+    <ObjectVersion>1.1</ObjectVersion>
+    <MultipleInstances>Single</MultipleInstances>
+    <Mandatory>Optional</Mandatory>
+    <Resources>
+      <Item ID="0">
+        <Name>Config Version</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Unsigned Integer</Type>
+        <RangeEnumeration>1..4294967295</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Configuration version. Writing JSON to this resource is also supported by firmware to update multiple fields atomically.]]></Description>
+      </Item>
+      <Item ID="1">
+        <Name>Sampling Enabled</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Boolean</Type>
+        <RangeEnumeration></RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Enable or disable sampling flow execution.]]></Description>
+      </Item>
+      <Item ID="2">
+        <Name>Sample Rate</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Unsigned Integer</Type>
+        <RangeEnumeration>1..4294967295</RangeEnumeration>
+        <Units>s</Units>
+        <Description><![CDATA[Sampling interval in seconds.]]></Description>
+      </Item>
+      <Item ID="3">
+        <Name>Report Rate</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Unsigned Integer</Type>
+        <RangeEnumeration>1..4294967295</RangeEnumeration>
+        <Units>s</Units>
+        <Description><![CDATA[Reporting interval in seconds.]]></Description>
+      </Item>
+      <Item ID="4">
+        <Name>Sleep Mode</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration>no|light|deep</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Sampling sleep mode policy.]]></Description>
+      </Item>
+      <Item ID="5">
+        <Name>Sensor UART I2C</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration>Allowed chars: [A-Za-z0-9_.-]</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Configured sensor selector for UART/I2C path (used by firmware to extract script instance IDs).]]></Description>
+      </Item>
+      <Item ID="6">
+        <Name>Sensor RS485</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration>Allowed chars: [A-Za-z0-9_.-]</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Configured sensor selector for RS485 path (used by firmware to extract script instance IDs).]]></Description>
+      </Item>
+      <Item ID="7">
+        <Name>Sampling Resolution</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>String</Type>
+        <RangeEnumeration>160x120|320x240|480x320|640x480|800x600|1024x768|1280x720|1280x1024|1600x1200|1920x1080|2048x1536|2560x1920</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Camera sampling resolution used by firmware for captured data.]]></Description>
+      </Item>
+      <Item ID="10">
+        <Name>Data Field</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Multiple</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>Opaque</Type>
+        <RangeEnumeration>Up to 30 lines, each up to 128 bytes</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Latest sampled payload lines exposed as a multiple-resource opaque field.]]></Description>
+      </Item>
+      <Item ID="11">
+        <Name>Send ACK Timeout</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Unsigned Integer</Type>
+        <RangeEnumeration>1..4294967295</RangeEnumeration>
+        <Units>ms</Units>
+        <Description><![CDATA[ACK wait timeout for sample data send.]]></Description>
+      </Item>
+      <Item ID="12">
+        <Name>Send Retry Delay</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Unsigned Integer</Type>
+        <RangeEnumeration>1..4294967295</RangeEnumeration>
+        <Units>ms</Units>
+        <Description><![CDATA[Delay between sample data send retries.]]></Description>
+      </Item>
+      <Item ID="13">
+        <Name>Send Retry Count</Name>
+        <Operations>RW</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Mandatory</Mandatory>
+        <Type>Unsigned Integer</Type>
+        <RangeEnumeration>1..10</RangeEnumeration>
+        <Units></Units>
+        <Description><![CDATA[Maximum retry attempts for sample data send.]]></Description>
+      </Item>
+      <Item ID="14">
+        <Name>Server Aligned Uptime</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration>-1 or >= 0</RangeEnumeration>
+        <Units>ms</Units>
+        <Description><![CDATA[Uptime aligned to server timeline using registration ACK server_uptime_ms plus RTT compensation. Returns -1 when sync is not available.]]></Description>
+      </Item>
+      <Item ID="15">
+        <Name>Uptime Difference</Name>
+        <Operations>R</Operations>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Type>Integer</Type>
+        <RangeEnumeration>Any signed integer</RangeEnumeration>
+        <Units>ms</Units>
+        <Description><![CDATA[Offset between server-aligned uptime and local device uptime: server_aligned_uptime_ms - local_uptime_ms. Add this value to local uptime to align with server time.]]></Description>
+      </Item>
+    </Resources>
+    <Description2><![CDATA[]]></Description2>
+  </Object>
+</LWM2M>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LWM2M xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://openmobilealliance.org/tech/profiles/LWM2M.xsd">
+    <Object ObjectType="MODefinition">
+        <Name>Camera</Name>
+        <Description1>Simple camera object for on-demand capture and image transfer.</Description1>
+        <ObjectID>5001</ObjectID>
+        <ObjectURN>urn:oma:lwm2m:ext:5001</ObjectURN>
+        <LWM2MVersion>1.0</LWM2MVersion>
+        <ObjectVersion>1.0</ObjectVersion>
+        <MultipleInstances>Single</MultipleInstances>
+        <Mandatory>Optional</Mandatory>
+        <Resources>
+            <Item ID="0">
+                <Name>Capture</Name>
+                <Operations>E</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Mandatory</Mandatory>
+                <Type></Type>
+                <RangeEnumeration></RangeEnumeration>
+                <Units></Units>
+                <Description>Execute to trigger image capture.</Description>
+            </Item>
+            <Item ID="1">
+                <Name>Image</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Mandatory</Mandatory>
+                <Type>Opaque</Type>
+                <RangeEnumeration></RangeEnumeration>
+                <Units></Units>
+                <Description>Last captured image data.</Description>
+            </Item>
+            <Item ID="2">
+                <Name>Image Length</Name>
+                <Operations>R</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Mandatory</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration></RangeEnumeration>
+                <Units>bytes</Units>
+                <Description>Length of the last captured image.</Description>
+            </Item>
+            <Item ID="3">
+                <Name>Resolution</Name>
+                <Operations>RW</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>String</Type>
+                <RangeEnumeration></RangeEnumeration>
+                <Units></Units>
+                <Description>Target image resolution (e.g., 640x480).</Description>
+            </Item>
+            <Item ID="4">
+                <Name>JPEG Quality</Name>
+                <Operations>RW</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration>0..63</RangeEnumeration>
+                <Units></Units>
+                <Description>JPEG encoder quality where lower values generally mean higher image quality.</Description>
+            </Item>
+            <Item ID="5">
+                <Name>Buffer Size</Name>
+                <Operations>RW</Operations>
+                <MultipleInstances>Single</MultipleInstances>
+                <Mandatory>Optional</Mandatory>
+                <Type>Integer</Type>
+                <RangeEnumeration>1..1048576</RangeEnumeration>
+                <Units>bytes</Units>
+                <Description>Maximum local capture buffer size used to store the captured JPEG.</Description>
+            </Item>
+        </Resources>
+        <Description2></Description2>
+    </Object>
+</LWM2M>

@@ -1,0 +1,9 @@
+{
+  "idf.currentSetup": "/Users/jasonhao/esp/v5.5.1/esp-idf",
+  "clangd.path": "/Users/jasonhao/.espressif/tools/esp-clang/esp-19.1.2_20250312/esp-clang/bin/clangd",
+  "clangd.arguments": [
+    "--background-index",
+    "--query-driver=**",
+    "--compile-commands-dir=/Users/jasonhao/Documents/GitHub/demo/build"
+  ]
+}
