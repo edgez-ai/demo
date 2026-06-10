@@ -7,6 +7,14 @@ Starts a FreeRTOS task to print "Hello World".
 
 (See the README.md file in the upper level 'examples' directory for more information about examples.)
 
+## Project-specific setup
+
+Before building/flashing, update the LwM2M server URI in `sdkconfig.defaults.esp32s3`:
+
+`CONFIG_LWM2M_SERVER_URI="coap://homeassistant.local:5683"`
+
+Change this value to your own server IP (for example: `coap://192.168.1.100:5683`).
+
 ## How to use example
 
 Follow detailed instructions provided specifically for this example.
