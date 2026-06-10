@@ -3181,13 +3181,6 @@ static void halow_refresh_ip_network_after_wake(void)
 {
     halow_register_link_status_callbacks();
 
-    enum mmipal_status hook_status = mmipal_rehook_lwip_callbacks();
-    if (hook_status == MMIPAL_SUCCESS) {
-        ESP_LOGI(TAG, "HaLow wake: re-hooked MMIPAL lwIP callbacks");
-    } else if (hook_status != MMIPAL_NOT_SUPPORTED && hook_status != MMIPAL_NO_LINK) {
-        ESP_LOGW(TAG, "HaLow wake: failed to re-hook MMIPAL lwIP callbacks: %d", (int)hook_status);
-    }
-
     if (!halow_configure_cached_static_ip_after_wake()) {
         (void)halow_configure_dhcp_after_wake("cached static unavailable");
     }
@@ -3641,13 +3634,6 @@ static void halow_sta_status_callback(enum mmwlan_sta_state sta_state)
         s_connection_type = LWM2M_CONN_TYPE_HALOW;
 
         if (s_mmipal_initialized) {
-            enum mmipal_status hook_status = mmipal_rehook_lwip_callbacks();
-            if (hook_status == MMIPAL_SUCCESS) {
-                ESP_LOGI(TAG, "HaLow connect: re-hooked MMIPAL lwIP callbacks");
-            } else if (hook_status != MMIPAL_NOT_SUPPORTED && hook_status != MMIPAL_NO_LINK) {
-                ESP_LOGW(TAG, "HaLow connect: failed to re-hook MMIPAL callbacks (%d)", (int)hook_status);
-            }
-
             if (!s_halow_wake_static_ip_active) {
                 struct mmipal_ip_config ip_cfg = {0};
                 ip_cfg.mode = MMIPAL_DHCP;
@@ -4447,19 +4433,12 @@ static esp_err_t halow_init(void)
     ESP_LOGI(TAG, "Regulatory max EIRP: %u dBm", max_eirp_dbm);
     
     // MMIPAL must be initialized at least once per boot to create/register the MM lwIP netif.
-    // If lwIP is already initialized by esp_netif, attach MMIPAL netif to existing lwIP
-    // instead of calling tcpip_init() again.
     if (!s_mmipal_initialized) {
         struct mmipal_init_args mmipal_args = MMIPAL_INIT_ARGS_DEFAULT;
         enum mmipal_status mmipal_status;
 
-        if (g_lwip_initialized_by_esp_netif) {
-            ESP_LOGI(TAG, "Attaching mmipal to existing lwIP (esp_netif already initialized)");
-            mmipal_status = mmipal_init_on_existing_lwip(&mmipal_args);
-        } else {
-            ESP_LOGI(TAG, "Initializing mmipal (lwIP network stack + WLAN boot)...");
-            mmipal_status = mmipal_init(&mmipal_args);
-        }
+        ESP_LOGI(TAG, "Initializing mmipal (lwIP network stack + WLAN boot)...");
+        mmipal_status = mmipal_init(&mmipal_args);
 
         if (mmipal_status == MMIPAL_SUCCESS) {
             s_mmipal_initialized = true;
